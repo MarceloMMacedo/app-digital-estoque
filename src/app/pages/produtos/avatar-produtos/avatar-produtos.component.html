@@ -1,0 +1,22 @@
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <input type="file" id="imgupload" style="display:none" accept="image/*" (change)="onUploadMainImage($event)" />
+
+        <div class="avatar  mt-2">
+            <a (click)="onClickImagePrincipal()">
+                <img width="120" height="120" class="icon icon-lg rounded-circle" [src]="produto.imagem || 'assets/images/estoque/produto.gif'" />
+            </a>
+        </div>
+
+
+        <div class="d-flex mg-b-25">
+        </div>
+    </div>
+</div>
+
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <h5 class="mg-b-2 tx-spacing--1">{{produto.nome}} </h5>
+
+    </div>
+</div>

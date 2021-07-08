@@ -1,0 +1,124 @@
+<div class="d-sm-flex align-items-center justify-content-between mg-b-20 mg-lg-b-30">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-style1 mg-b-10">
+                <li class="breadcrumb-item"><a href="#">Cadastro</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Produtos</li>
+            </ol>
+        </nav>
+        <h4 class="mg-b-0 tx-spacing--1">Lista de Produtos</h4>
+
+
+    </div>
+    <div class="pull-rigth">
+
+    </div>
+</div>
+
+
+<nz-card nzTitle="Lista de Produtos" [nzExtra]="extraTemplate" *ngIf="isrealy">
+    <div class="table-responsive" style="overflow-x:auto;  overflow-y:auto;" *ngIf="isrealy">
+        <br>
+
+        <div class="search-form col-lg-4">
+            <nz-input-group [nzSuffix]="suffixIconSearch">
+                <input type="text" nz-input placeholder="input search text" [(ngModel)]="value" (keyup)="onKeyUp($event)" />
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
+                <i nz-icon nzType="search"></i>
+            </ng-template>
+        </div>
+        <hr>
+        <table id=" " class="table table-sm table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th class="wd-20p">Name</th>
+                    <th class="wd-25p">Modelo</th>
+                    <th class="wd-20p">Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr *ngFor="let a of pages.content; let i=index">
+                    <td><img width="30" height="30" class="icon icon-sm rounded-circle" [src]="a.imagem || 'assets/images/estoque/produto.gif'">
+                        <a style="margin-left: 10px;" [routerLink]="['/digital/edit-produtos/', a.id]" routerLinkActive="router-link-active">{{a.nome}}</a> </td>
+                    <td><a>  {{a.modelo}}</a> </td>
+                    <td>{{a.valor | currency : 'R$'}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between p-2">
+            <ngb-pagination [(page)]="page" [pageSize]="10" (pageChange)="changepage()" [maxSize]="5" [rotate]="true" size='sm' [collectionSize]="pages.totalElements"></ngb-pagination>
+        </div>
+    </div>
+</nz-card>
+<ng-template #extraTemplate>
+    <button class="btn btn-sm pd-x-15 btn-primary btn-uppercase mg-l-5" (click)="showModal()">
+        <i data-feather="plus" class="wd-10 mg-r-5"></i> Novo Produto</button>
+
+</ng-template>
+<nz-skeleton [nzActive]="true" [nzAvatar]="true" [nzParagraph]="{ rows: 4 }" *ngIf="!isrealy"></nz-skeleton>
+
+
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+    <ng-template #modalTitle>Adicinar Produto</ng-template>
+
+    <ng-template #modalContent>
+        <form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+
+            <div class="form-row">
+
+
+
+                <div class="form-group col-md-12 mt-1">
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Por faveo digite Modelo do produto">
+                            <label for="inputAddress2">Modelo</label>
+                            <input formControlName="modelo" placeholder="Modelo" nz-input [(ngModel)]="inputmodelo" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto" />
+                            <nz-autocomplete [nzDataSource]="filteredOptions" #auto></nz-autocomplete>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="form-group col-md-12 mt-1">
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Por faveo digite Categoria do produto">
+                            <label for="inputAddress2">Categoria</label>
+                            <nz-select [(ngModel)]="categoria" formControlName="categoria" nzAllowClear nzPlaceHolder="Categoria" (ngModelChange)="categoriaChange($event)">
+                                <nz-option *ngFor="let option of categorias" [nzValue]="option" [nzLabel]="option"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="form-group col-md-12 mt-1">
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Por faveo digite Unidade do produto">
+                            <label for="inputAddress2">Unidade</label>
+                            <nz-select [(ngModel)]="unidade" formControlName="unidade" nzAllowClear nzPlaceHolder="Unidade">
+                                <nz-option *ngFor="let option of unidades" [nzValue]="option" [nzLabel]="option"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <br>
+                <div class="form-group col-md-12 mt-1">
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Por faveo digite o nome do produto">
+                            <label for="inputAddress2">Produto</label>
+                            <input type="email" class="form-control" nz-input [(ngModel)]="produto" id="inputAddress2" formControlName="produto" placeholder="Produto">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <hr/>
+
+
+        </form>
+    </ng-template>
+
+    <ng-template #modalFooter>
+        <button nz-button nzType="default" (click)="handleCancel()">Cancelar</button>
+        <button nz-button nzType="primary" [disabled]="!validateForm.valid" (click)="handleOk()">Confirmar</button>
+    </ng-template>
+</nz-modal>

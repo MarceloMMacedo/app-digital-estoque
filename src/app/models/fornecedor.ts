@@ -1,0 +1,30 @@
+export interface Fornecedor {
+  id: number;
+  nome?: string;
+  descricao?: string;
+  cnpjcpf?: string;
+  ie?: string;
+  telefone?: string;
+  contato?: string;
+  emailcontato?: string;
+  telefonecontato?: string;
+  setorcontato?: string;
+  logradouro?: string;
+  cep?: string;
+  bairro?: string;
+  cidade?: string;
+  nro?: string;
+  complemento?: string;
+  uf?: string;
+  status?: string;
+  imagem?: string;
+  data_situacao?: string;
+  tipo?: string;
+  porte?: string;
+  natureza_juridica?: string;
+  capital_social?: string;
+  atividade_principal?: string;
+  nameFantasia?: string;
+  limitecredito?: number;
+  rolers?: string;
+}

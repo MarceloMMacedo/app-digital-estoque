@@ -1,0 +1,108 @@
+<div class="form-row ">
+    <div class=" col-lg-12  ">
+        <div class="form-group  mt-1">
+            <label for="inputAddress2">Produto</label>
+            <input nz-input placeholder="Produto" class="form-control" [(ngModel)]="produto.nome">
+        </div>
+    </div>
+    <div class=" col-lg-12  ">
+        <div class="form-group  mt-1">
+            <label for="inputAddress2">Descrição</label>
+            <input nz-input placeholder="Descrição" class="form-control" [(ngModel)]="produto.descricao">
+        </div>
+    </div>
+</div>
+<div class="form-row ">
+    <div class=" col-lg-6 ">
+        <div class="form-group  mt-1  ">
+            <label for="inputAddress2">Modelo</label>
+            <nz-select nzShowSearch [nzDropdownRender]="renderTemplate" nzPlaceHolder="Modelo" [(ngModel)]="produto.modelo.id" class="col-lg-12">
+                <nz-option *ngFor="let item of modelos" [nzLabel]="item.nome" [nzValue]="item.id"></nz-option>
+            </nz-select>
+            <ng-template #renderTemplate>
+                <nz-divider></nz-divider>
+                <div class="container">
+                    <input nz-input type="text" nz-input nz-input #inputElement />
+                    <a class="add-item" (click)="addmodelo(inputElement)"><i nz-icon nzType="plus"></i>Adicionar</a>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+    <div class=" col-lg-6 ">
+        <div class="form-group  mt-1">
+            <label for="inputAddress2">Categoria</label>
+            <nz-select [(ngModel)]="produto.categoria" nzPlaceHolder="Modelo" class='col-lg-12  '>
+                <nz-option *ngFor="let option of categorias" [nzValue]="option" [nzLabel]="option"></nz-option>
+            </nz-select>
+        </div>
+    </div>
+
+</div>
+<div class="form-row ">
+    <div class=" col-lg-2  ">
+        <div class="form-group  mt-1">
+            <label for="inputAddress2">Peso</label>
+            <input nz-input placeholder="Peso" class="form-control" [(ngModel)]="produto.peso" currencyMask />
+        </div>
+    </div>
+    <div class=" col-lg-2  ">
+        <div class="form-group  mt-1">
+            <label for="inputAddress2">Altura</label>
+            <input nz-input placeholder="Altura" class="form-control" [(ngModel)]="produto.altura" currencyMask />
+        </div>
+    </div>
+
+    <div class=" col-lg-2  ">
+        <div class="form-group  mt-1">
+            <label for="inputAddress2">Largura</label>
+            <input nz-input placeholder="Largura" class="form-control" [(ngModel)]="produto.largura" currencyMask />
+        </div>
+    </div>
+    <div class=" col-lg-2 ">
+        <div class="form-group  mt-1">
+            <label for="inputAddress2">Comprimento</label>
+            <input nz-input placeholder="Comprimento" class="form-control" [(ngModel)]="produto.comprimento" currencyMask />
+        </div>
+    </div>
+    <div class=" col-lg-4 ">
+        <div class="form-group  mt-1">
+            <label for="inputAddress2">Unidade</label>
+            <nz-select [(ngModel)]="produto.unidade" nzPlaceHolder="Unidade" class='col-lg-12  '>
+                <nz-option *ngFor="let option of unidades" [nzValue]="option" [nzLabel]="option"></nz-option>
+            </nz-select>
+        </div>
+    </div>
+</div>
+
+<div class="form-row ">
+    <div class=" col-lg-3  ">
+        <div class="form-group  mt-1  ">
+            <label for="inputAddress2">Precificação automático</label>
+            <nz-select [(ngModel)]="produto.isvalue" name="value" nzPlaceHolder="" class='col-lg-12'>
+                <nz-option nzLabel="Não" nzValue="Não">
+                </nz-option>
+                <nz-option nzLabel="Sim" nzValue="Sim">
+                </nz-option>
+            </nz-select>
+
+        </div>
+    </div>
+    <div class=" col-lg-3  " *ngIf="produto.isvalue=='Não'">
+        <div class="form-group  mt-1">
+            <label for="inputAddress2">Valor Proposto</label>
+            <input nz-input placeholder="Altura" class="form-control" [(ngModel)]="produto.valorinterno" currencyMask />
+        </div>
+    </div>
+    <div class=" col-lg-3  ">
+        <div class="form-group  mt-1">
+            <label for="inputAddress2">Valor Fornecedor</label>
+            <input nz-input placeholder="Altura" class="form-control" [(ngModel)]="produto.valorFornecedo" currencyMask />
+        </div>
+    </div>
+    <div class=" col-lg-3  ">
+        <div class="form-group  mt-1">
+            <label for="inputAddress2">Valor Final</label>
+            <input nz-input placeholder="Altura" class="form-control" [(ngModel)]="produto.valorfinal" currencyMask />
+        </div>
+    </div>
+</div>

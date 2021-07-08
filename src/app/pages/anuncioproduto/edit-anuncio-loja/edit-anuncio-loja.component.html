@@ -1,0 +1,200 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<div class="d-sm-flex align-items-center justify-content-between mg-b-20 mg-lg-b-30">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-style1 mg-b-10">
+                <li class="breadcrumb-item"><a [routerLink]="['/digital/list-anuncio-loja']" routerLinkActive="router-link-active">Lista Produtos</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Anuncios Loja</li>
+            </ol>
+        </nav>
+        <h4 class="mg-b-0 tx-spacing--1">Editar Anuncio</h4>
+
+
+    </div>
+
+    <div class="pull-rigth">
+
+    </div>
+</div>
+<nz-card nzTitle="Editar Anuncio Loja" [nzExtra]="extraTemplate" *ngIf="isload">
+    <div class="row">
+
+        <div class="col-lg-12  ">
+            <div class="row" *ngIf="isload">
+                <div class="col-lg-3">
+                    <div class="col-lg-3 container  ">
+                        <div class="container h-100">
+                            <div class="row h-100 justify-content-center align-items-center">
+                                <input type="file" id="imgupload" style="display:none" accept="image/*" (change)="onUploadMainImage($event)" />
+
+                                <div class="avatar  mt-2">
+                                    <a (click)="onClickImagePrincipal()">
+                                        <img width="120" height="120" class="icon icon-lg rounded-circle" [src]="anunciosloja.imagem || 'assets/images/estoque/produto.gif'" />
+                                    </a>
+                                </div>
+
+
+                                <div class="d-flex mg-b-25">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+
+                    <h2 class="title mt-3">{{anunciosloja.nome}}</h2>
+                    <div class="mb-3 mt-3">
+                        <var class="price h4">{{anunciosloja.valorFinal | currency :'R$'}} </var>
+
+                    </div>
+                </div>
+                <div class="col-lg-12  ">
+                    <label for="inputAddress2">Nome</label>
+                    <input class="mb-3 mt-3" nz-input [(ngModel)]="anunciosloja.nome" id="nome" name="nome" placeholder="Nome Anúncio do Produto">
+
+                    <!-- rating-wrap.// -->
+
+
+                    <!-- price-detail-wrap .// -->
+
+                    <nz-textarea-count class="mb-3 mt-3" [nzMaxCharacterCount]="200">
+                        <textarea rows="4" [(ngModel)]="anunciosloja.descricao" placeholder="Descrição do Produto" nz-input></textarea>
+                    </nz-textarea-count>
+
+
+                    <div class="form-row ">
+                        <div class=" col-lg-5  ">
+                            <div class="form-group  mt-1  ">
+                                <label for=""> Grupo de Preço </label>
+                                <nz-select class='col-lg-12' [(ngModel)]="anunciosloja.grupopreco.id" name="value" nzPlaceHolder="">
+                                    <nz-option *ngFor="let item of grupofinanceiros" [nzLabel]="item.nome" [nzValue]="item.id">
+                                    </nz-option>
+                                </nz-select>
+                            </div>
+                        </div>
+                        <div class=" col-lg-3  ">
+                            <div class="form-group  mt-1  ">
+                                <label for="inputAddress2">Ativo</label>
+                                <nz-select [(ngModel)]="anunciosloja.status" name="value" nzPlaceHolder="" class='col-lg-12'>
+                                    <nz-option nzLabel="Não" nzValue="Não">
+                                    </nz-option>
+                                    <nz-option nzLabel="Sim" nzValue="Sim">
+                                    </nz-option>
+                                </nz-select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row ">
+
+
+                        <div class=" col-lg-3  ">
+                            <div class="form-group  mt-1">
+                                <label for="inputAddress2">Saldor</label>
+                                <input nz-input placeholder="Saldo" class="form-control" [(ngModel)]="anunciosloja.saldo" currencyMask />
+                            </div>
+                        </div>
+                        <div class=" col-lg-3  ">
+                            <div class="form-group  mt-1">
+                                <label for="inputAddress2">Saldo Mínimo</label>
+                                <input nz-input placeholder="Saldo Mínimo" class="form-control" [(ngModel)]="anunciosloja.saldoMinimo" currencyMask />
+                            </div>
+                        </div>
+                        <div class=" col-lg-3  ">
+                            <div class="form-group  mt-1">
+                                <label for="inputAddress2">Saldo Máximo</label>
+                                <input nz-input placeholder="Saldo Máximo" class="form-control" [(ngModel)]="anunciosloja.saldoMaximo" currencyMask />
+                            </div>
+                        </div>
+                        <div class=" col-lg-3  ">
+                            <div class="form-group  mt-1">
+                                <label for="inputAddress2">Reposição</label>
+                                <input nz-input placeholder="Saldo Reposição" class="form-control" readonly [(ngModel)]="anunciosloja.saldoReposicao" currencyMask />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- product-info-aside .// -->
+
+                <!-- col.// -->
+            </div>
+            <div class="col-lg-12 mt-3 " *ngIf="isload">
+                <nz-card nzTitle="Itens do Anuncio">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <table class="mt-3">
+                                <tr>
+                                    <th class="col-sm-3">Título </th>
+                                    <th class="col-sm-7">Descrição </th>
+                                    <th class="col-sm-2"> <button nz-button nzType="link" nzSize="small" (click)="adddescricao()"><i
+                        nz-icon nzType="plus"></i></button>
+                                    </th>
+                                </tr>
+                                <tr *ngFor="let item of anunciosloja.descricoes; let i=index ">
+                                    <th class="col-sm-3"> <input nz-input [(ngModel)]="item.titulo"></th>
+                                    <th class="col-sm-7"> <input nz-input [(ngModel)]="item.descricao" id="name" name="name" placeholder=""> </th>
+                                    <th class="col-sm-2"> <button nz-button nzType="link" nzSize="small" title="Excluir" (click)="excluirdescricao(i)"> <i nz-icon nzType="delete" nzTheme="outline"></i></button></th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-lg-6">
+                            <table class="mt-3">
+                                <tr>
+                                    <th class="col-sm-6">Produto </th>
+                                    <th class="col-sm-2">Valor </th>
+                                    <th class="col-sm-3">Qtd </th>
+
+                                    <th class="col-sm-3">STotal </th>
+                                    <th class="col-sm-1"> <button nz-button nzType="link" nzSize="small" (click)="addproduto()"><i
+                        nz-icon nzType="plus"></i></button>
+                                    </th>
+                                </tr>
+                                <tr *ngFor="let item of anunciosloja.itensProduto; let i=index ">
+
+
+
+                                    <th class="col-sm-7">
+                                        <nz-select class="col-sm-7" nzShowSearch [(ngModel)]="item.produto.id" name="value" nzPlaceHolder="" (ngModelChange)="selectproduto($event,i)">
+                                            <nz-option *ngFor="let item1 of produtos" [nzLabel]="item1.nome" [nzValue]="item1.id">
+                                            </nz-option>
+                                        </nz-select>
+                                    </th>
+                                    <th class="col-sm-2"> {{item.valor | currency :'R$'}} </th>
+                                    <th class="col-sm-2"> <input nz-input [(ngModel)]="item.quantidade" currencyMask> </th>
+
+                                    <th class="col-sm-2"> {{item.subtotal| currency :'R$'}} </th>
+                                    <th class="col-sm-1"> <button nz-button nzType="link" nzSize="small" title="Excluir" (click)="excluirproduto(i)"> <i nz-icon nzType="delete" nzTheme="outline"></i></button></th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+
+                </nz-card>
+            </div>
+        </div>
+    </div>
+    <ng-template #extraTemplate>
+
+        <ul nz-menu nzMode="horizontal">
+            <li nz-menu-item nzSelected>
+                <i nz-icon nzType="save"></i><a (click)="save()"> Atualizar Anuncio</a>
+            </li>
+            <li nz-submenu nzTitle="Clonar" nzIcon="setting">
+
+                <ul>
+                    <li nz-menu-item>
+                        <a> Para Contrato</a> </li>
+                    <li nz-menu-item><a (click)="cloneWeb() "> Para Web</a> </li>
+                </ul>
+            </li>
+        </ul>
+    </ng-template>
+</nz-card>

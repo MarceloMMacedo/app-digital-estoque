@@ -1,0 +1,161 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+    <div class="d-sm-flex align-items-center justify-content-between mg-b-20 mg-lg-b-30">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style1 mg-b-10">
+                    <li class="breadcrumb-item"><a [routerLink]="['/digital/list-produtos']" routerLinkActive="router-link-active">Lista Produtos</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Produtos</li>
+                </ol>
+            </nav>
+            <h4 class="mg-b-0 tx-spacing--1">Editar Produtos</h4>
+
+
+        </div>
+
+        <div class="pull-rigth">
+
+        </div>
+    </div>
+    <nz-card nzTitle="Editar  Produtos" [nzExtra]="extraTemplate" *ngIf="isload">
+
+
+        <div class="card mt-2" *ngIf="isload">
+
+            <div class="row">
+                <div class="col-lg-3 container card">
+                    <app-avatar-produtos [produto]="produto"></app-avatar-produtos>
+                </div>
+                <div class="col-lg-9 card">
+                    <app-descricao-produto [produto]="produto" [modelos]='modelos' [unidades]='unidades' [categorias]='categorias'></app-descricao-produto>
+                </div>
+
+            </div>
+        </div>
+    </nz-card>
+    <ng-template #extraTemplate>
+        <button class="btn btn-sm pd-x-15 btn-primary btn-uppercase mg-l-5" (click)="onSave()">
+        <i data-feather="plus" class="wd-10 mg-r-5" ></i> Atualizar Produto</button>
+    </ng-template>
+    <nz-card nzTitle="Fornecedor Produto" [nzExtra]="extraTemplate1" *ngIf="isload">
+
+        <nz-list class="demo-loadmore-list">
+            <nz-list-item *ngFor="let item of produto.fornecedoresproduto;let i=index">
+                <ng-container>
+                    <nz-list-item-meta nzDescription={{item.fornecedor.nome}}>
+                        <nz-list-item-meta-title>
+
+                        </nz-list-item-meta-title>
+                    </nz-list-item-meta>
+                    {{item.valor | currency:'R$' }}
+                    <ul nz-list-item-actions>
+                        <nz-list-item-action><a (click)="excluirfornecedorproduto(item.fornecedor.nome,i)">Exclir</a></nz-list-item-action>
+                        <nz-list-item-action><a (click)="setfornecedorproduto(item)">Editar</a></nz-list-item-action>
+                    </ul>
+                </ng-container>
+            </nz-list-item>
+            <div class="loadmore" nz-list-load-more>
+                <button nz-button (click)="showModal()">Adicionar Fornecedor</button>
+            </div>
+        </nz-list>
+
+        <ng-template #extraTemplate1>
+            <button class="btn btn-sm pd-x-15 btn-primary btn-uppercase mg-l-5" (click)="newfornecedores()">
+            <i data-feather="plus" class="wd-10 mg-r-5"  ></i> Fornecerdor</button>
+        </ng-template>
+
+
+        <nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+            <ng-template #modalTitle>Novo Fornecedor</ng-template>
+            <ng-template #modalContent>
+                <form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+
+                    <div class="form-row">
+                        <div class="input-group col-md-12">
+
+                            <nz-form-item>
+                                <nz-form-control nzErrorTip="por favor inserir Cnpj ou cnpj">
+                                    <label for=" inputEmail99">Cnpj/CPF</label>
+
+                                    <div class="input-group">
+                                        <input type="text" formControlName="cnpj" class="form-control cpfOuCnpj" nz-input [mask]="getCpfCnpjMask()" [(ngModel)]="cnpjcpf" placeholder="CPF ou CNPJ" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                        <div class="input-group-append">
+                                            <button (click)="getfornecedorprocnpj()" nz-button *ngIf="cnpjcpf.length==14" nzSize="default"> <i nz-icon nzType="search" nzTheme="outline" ></i> </button>
+                                        </div>
+                                    </div>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div class="form-group col-md-12 ">
+                            <nz-form-item>
+                                <nz-form-control nzErrorTip="por favor digite nome fornecedor">
+                                    <label for="inputAddress2">Nome</label>
+                                    <input type="text" class="form-control" [(ngModel)]="nomefornecedor" id="userName" formControlName="userName" placeholder="Nome" nz-input name="userName">
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                    <hr/>
+                    <nz-form-item>
+                    </nz-form-item>
+                </form>
+            </ng-template>
+
+            <ng-template #modalFooter>
+                <button nz-button nzType="default" (click)="handleCancel()">Cancelar</button>
+                <button nz-button nzType="primary" [disabled]="!validateForm.valid" (click)="showConfirmincluirfornecedor()">Cadastrar</button>
+
+            </ng-template>
+        </nz-modal>
+
+
+
+        <nz-modal [(nzVisible)]="iseditfornecedores" [nzTitle]="modalTitle1" [nzContent]="modalContent1" [nzFooter]="modalFooter1" (nzOnCancel)="handleCancel()">
+            <ng-template #modalTitle1>Adicionar Fornecedor</ng-template>
+            <ng-template #modalContent1>
+                <form [formGroup]="validateForfornecedor" (ngSubmit)="submitFornecedor()">
+                    <div class="form-row">
+                        <div class="input-group col-md-12">
+
+                            <nz-form-item class=" col-md-12">
+                                <nz-form-control nzErrorTip="por favor inserir Fornecedor">
+                                    <label for=" inputEmail99">Fornecedor</label>
+                                    <nz-select class=" col-md-12" nzShowSearch nzAllowClear formControlName="fornecedor" nzPlaceHolder="Select a person" [(ngModel)]="fornecedorProduto.fornecedor.id">
+                                        <nz-select [(ngModel)]="fornecedorProduto.fornecedor.id" name="fornecedores" nzPlaceHolder="" nzAllowClear>
+                                            <nz-option *ngFor="let item of fornecedores" [nzLabel]="item.nome" [nzValue]="item.id">
+                                            </nz-option>
+                                        </nz-select>
+
+                                    </nz-select>
+
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div class="form-group col-md-12 ">
+                            <nz-form-item>
+                                <nz-form-control nzErrorTip="por favor digite nome fornecedor">
+                                    <label for="inputAddress2">Valor</label>
+                                    <input type="text" class="form-control" currencyMask [(ngModel)]="fornecedorProduto.valor" id="userName" formControlName="valor" placeholder="Valor" nz-input name="userName">
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                    <hr/>
+                    <nz-form-item>
+                    </nz-form-item>
+                </form>
+            </ng-template>
+
+            <ng-template #modalFooter1>
+                <button nz-button nzType="default" (click)="handleCancel()">Cancelar</button>
+                <button nz-button nzType="primary" [disabled]="!validateForfornecedor.valid" (click)="inserirfornecedor()">Salvar</button>
+
+            </ng-template>
+        </nz-modal>
+
+
+
+
+
+        <nz-skeleton [nzActive]="true" [nzAvatar]="true" [nzParagraph]="{ rows: 6 }" *ngIf="!isload"></nz-skeleton>
